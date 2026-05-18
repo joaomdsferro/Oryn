@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-0: #080e1a;
+  --color-surface-1: #0f1828;
+  --color-surface-2: #060b16;
+
+  --color-edge: rgba(255, 255, 255, 0.06);
+  --color-edge-bright: rgba(140, 180, 255, 0.22);
+
+  --color-ink: rgba(235, 240, 250, 0.92);
+  --color-ink-mute: rgba(255, 255, 255, 0.45);
+  --color-ink-faint: rgba(255, 255, 255, 0.22);
+
+  --color-accent: #6b9eff;
+
+  --color-verb-get:    #7cb3ff;
+  --color-verb-post:   #6ee7b7;
+  --color-verb-put:    #fcd34d;
+  --color-verb-patch:  #c4b5fd;
+  --color-verb-delete: #fda4af;
+}
+
+html {
+  background-color: var(--color-surface-0);
+  color-scheme: dark;
+}
+
+html.windowed,
+html.windowed body {
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+body {
+    background-color: var(--color-surface-0);
+}
+
+#root {
+    min-height: 100vh;
+    background-color: var(--color-surface-0);
+    font-family: "Liberation Sans", sans-serif;
+}
+
+/* Tauri transparent windows: keep interactive chrome opaque (no-drag avoids drag-region holes on Linux). */
+.no-drag {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}
+
+[data-tauri-drag-region] {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toast-lifecycle {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  8%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  82%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+}
+
+/* Fonts */
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("/assets/fonts/LiberationSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("/assets/fonts/LiberationSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("/assets/fonts/LiberationSans-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "Liberation Sans";
+  src: url("/assets/fonts/LiberationSans-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "MPLUS1Code";
+  src: url("/assets/fonts/MPLUS1Code[wght].ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BluuNext";
+  src: url("/assets/fonts/BluuNext-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+
