@@ -87,7 +87,7 @@ export default function Titlebar(props: Props) {
   };
 
   return (
-    <div class="relative z-[100] flex items-center h-10 shrink-0 select-none bg-surface-0 border-b border-edge">
+    <div class="relative z-100 flex items-center h-10 shrink-0 select-none bg-surface-0 border-b border-edge">
       <div class="px-2 flex items-center gap-1">
         <LeftControls
           sidebarOpen={props.sidebarOpen}
@@ -102,14 +102,14 @@ export default function Titlebar(props: Props) {
             <button
               type="button"
               onClick={() => { setEnvMenuOpen(false); setProjectMenuOpen(o => !o); }}
-              class="flex items-center gap-1 h-7 px-2 rounded-md text-[10px] font-mono text-white/60 hover:text-white/90 hover:bg-surface-2 transition-colors cursor-pointer max-w-[7rem]"
+              class="flex items-center gap-1 h-7 px-2 rounded-md text-[10px] font-mono text-white/60 hover:text-white/90 hover:bg-surface-2 transition-colors cursor-pointer max-w-28"
               title="Project"
             >
               <span class="truncate">{props.activeContext.project_name ?? "No project"}</span>
               <ChevronDown />
             </button>
             <Show when={projectMenuOpen()}>
-              <div class="absolute top-full left-0 mt-1 w-48 rounded-lg bg-surface-1 border border-edge shadow-lg py-1 z-[200]">
+              <div class="absolute top-full left-0 mt-1 w-48 rounded-lg bg-surface-1 border border-edge shadow-lg py-1 z-200">
                 <button
                   type="button"
                   onClick={() => selectProject(null)}
@@ -155,14 +155,14 @@ export default function Titlebar(props: Props) {
               <button
                 type="button"
                 onClick={() => { setProjectMenuOpen(false); setEnvMenuOpen(o => !o); refetchEnvs(); }}
-                class="flex items-center gap-1 h-7 px-2 rounded-md text-[10px] font-mono text-white/60 hover:text-white/90 hover:bg-surface-2 transition-colors cursor-pointer max-w-[6rem]"
+                class="flex items-center gap-1 h-7 px-2 rounded-md text-[10px] font-mono text-white/60 hover:text-white/90 hover:bg-surface-2 transition-colors cursor-pointer max-w-24"
                 title="Environment"
               >
                 <span class="truncate">{props.activeContext.environment_name ?? "No env"}</span>
                 <ChevronDown />
               </button>
               <Show when={envMenuOpen()}>
-                <div class="absolute top-full left-0 mt-1 w-44 rounded-lg bg-surface-1 border border-edge shadow-lg py-1 z-[200]">
+                <div class="absolute top-full left-0 mt-1 w-44 rounded-lg bg-surface-1 border border-edge shadow-lg py-1 z-200">
                   <button
                     type="button"
                     onClick={() => selectEnvironment(null)}
@@ -204,7 +204,7 @@ export default function Titlebar(props: Props) {
       />
 
       <span
-        class="absolute left-1/2 -translate-x-1/2 text-white/30 text-xl font-medium pointer-events-none z-[1]"
+        class="absolute left-1/2 -translate-x-1/2 text-white/30 text-xl font-medium pointer-events-none z-1"
         style="font-family: 'MPLUS1Code'"
       >
         Oryn

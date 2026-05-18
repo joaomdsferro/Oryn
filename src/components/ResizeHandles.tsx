@@ -31,14 +31,14 @@ export default function ResizeHandles(props: Props) {
         style={{ left: `${westLeft}px` }}
       />
       <div onMouseDown={handle("East")} class="absolute right-0 top-3 bottom-3 w-2 cursor-e-resize z-40" />
-      <div onMouseDown={handle("NorthWest")} class="absolute top-0 left-0 w-3 h-3 cursor-nw-resize z-40" />
-      <div onMouseDown={handle("NorthEast")} class="absolute top-0 right-0 w-3 h-3 cursor-ne-resize z-40" />
+      <div onMouseDown={handle("NorthWest")} class="absolute top-0 left-0 w-4 h-4 cursor-nw-resize z-40" />
+      <div onMouseDown={handle("NorthEast")} class="absolute top-0 right-0 w-4 h-4 cursor-ne-resize z-40" />
       <div
         onMouseDown={handle("SouthWest")}
-        class="absolute bottom-0 w-3 h-3 cursor-sw-resize z-40"
+        class="absolute bottom-0 w-4 h-4 cursor-sw-resize z-40"
         style={{ left: `${westLeft}px` }}
       />
-      <div onMouseDown={handle("SouthEast")} class="absolute bottom-0 right-0 w-3 h-3 cursor-se-resize z-40" />
+      <div onMouseDown={handle("SouthEast")} class="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize z-40" />
     </>
   );
 }

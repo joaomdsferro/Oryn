@@ -3,7 +3,7 @@
 Two layers:
 
 1. **Automated** — fast, hermetic checks that confirm core wiring is intact.
-2. **Manual** — U  walkthrough for behavior that can only be judged by eye (subjective to the tester, of course 🙂).
+2. **Manual** — UI walkthrough for behavior that can only be judged by eye (subjective to the tester, of course 🙂).
 
 Run automated first. If those pass, do a manual pass relevant to whatever you changed.
 
@@ -33,7 +33,7 @@ No network, no Tauri runtime, no on-disk state. If `cargo test` is green, the HT
 pnpm tsc --noEmit
 ```
 
-Type-check only — no runtime test suite yet. (Vitest skipped; revisit once frontend logic is large enough to be worth e tracting.)
+Type-check only — no runtime test suite yet. (Vitest skipped; revisit once frontend logic is large enough to be worth extracting.)
 
 ### What's intentionally NOT automated
 
@@ -57,8 +57,8 @@ Run `pnpm tauri dev`, then walk the sections relevant to your change. Tick each.
 ### REST — body modes
 - [ ] **None**: no body sent (`data` empty in httpbin echo).
 - [ ] **JSON**: paste `{"hello":"world"}` → httpbin echoes `json: {hello: "world"}`, `Content-Type: application/json` present in `headers`.
-- [ ] **Te t**: paste `plain te t` → `data: "plain te t"`, `Content-Type: te t/plain`.
-- [ ] **Form**: add `user=alice`, `pass=hunter2` rows → `form: {user, pass}`, `Content-Type: application/ -www-form-urlencoded`.
+- [ ] **Text**: paste `plain text` → `data: "plain text"`, `Content-Type: text/plain`.
+- [ ] **Form**: add `user=alice`, `pass=hunter2` rows → `form: {user, pass}`, `Content-Type: application/x-www-form-urlencoded`.
 - [ ] User-set `Content-Type` in Headers overrides the auto-applied one.
 
 ### GraphQL
@@ -87,7 +87,7 @@ _Setup: open the Secrets panel (left sidebar) and add a secret `TOKEN=abc123`. O
 
 ### CodeMirror body editor
 - [ ] Line numbers clearly visible.
-- [ ] JSON mode synta -highlights keys/strings/numbers.
+- [ ] JSON mode syntax-highlights keys/strings/numbers.
 - [ ] Tab inserts indentation (not focus jump).
 - [ ] Bracket matching works.
 - [ ] Long lines wrap.
@@ -135,4 +135,4 @@ _Setup: open the Secrets panel (left sidebar) and add a secret `TOKEN=abc123`. O
 
 - **Automated, pure logic** → `#[cfg(test)] mod tests` in the relevant Rust file.
 - **Automated, HTTP** → new test in `src-tauri/tests/http.rs` using `wiremock`. Keep it self-contained (one server per test).
-- **Manual** → add a checkbo  under the most fitting heading above. Keep entries one line, action-first ("Save a request → ...").
+- **Manual** → add a checkbox under the most fitting heading above. Keep entries one line, action-first ("Save a request → ...").

@@ -1,4 +1,4 @@
-# <h1 align="center">Oryn</h1>
+<h1 align="center">Oryn</h1>
 
 <p align="center">
   <em>A local-first API client built for privacy-conscious developers.</em>
