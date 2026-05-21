@@ -69,7 +69,7 @@ pub async fn perform_request(
     let client = reqwest::Client::builder()
         .timeout(std::time::Duration::from_secs(30))
         .connect_timeout(std::time::Duration::from_secs(10))
-        .user_agent("oryn/0.1.1")
+        .user_agent("oryn/0.1.2")
         .http1_only()
         .no_proxy()
         .build()

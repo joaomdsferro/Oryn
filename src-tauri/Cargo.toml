@@ -1,6 +1,6 @@
 [package]
 name = "oryn"
-version = "0.1.1"
+version = "0.1.2"
 description = "Oryn is an open-source, local-first, zero-telemetry API client designed for privacy-conscious developers. It rejects the bloat of modern, cloud-dependent suites in favor of a curated, high-performance workflow that keeps your data strictly on your machine."
 authors = ["João Ferro"]
 edition = "2021"
