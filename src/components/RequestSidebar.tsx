@@ -12,6 +12,11 @@ import type {
   HttpResponse,
 } from "../types";
 
+function currentZoom() {
+  const z = parseFloat(document.documentElement.style.zoom);
+  return Number.isFinite(z) && z > 0 ? z : 1;
+}
+
 export const SIDEBAR_WIDTH_MIN = 168;
 export const SIDEBAR_WIDTH_MAX = 480;
 export const SIDEBAR_WIDTH_DEFAULT = 224;
@@ -257,7 +262,8 @@ export default function RequestSidebar(props: Props) {
   const handleSavedContextMenu = (e: MouseEvent) => {
     if (tab() !== "saved" || !props.activeContext.project_id) return;
     e.preventDefault();
-    setSavedMenu({ x: e.clientX, y: e.clientY });
+    const z = currentZoom();
+    setSavedMenu({ x: e.clientX / z, y: e.clientY / z });
   };
 
   const closeSavedMenu = () => setSavedMenu(null);

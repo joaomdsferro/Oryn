@@ -8,6 +8,11 @@ import UrlInput from "./UrlInput";
 import TextField from "./TextField";
 import { refValueStatus } from "../lib/refTokens";
 
+function currentZoom() {
+  const z = parseFloat(document.documentElement.style.zoom);
+  return Number.isFinite(z) && z > 0 ? z : 1;
+}
+
 type Method = {
   name: string;
   color: string;
@@ -414,7 +419,8 @@ export default function RequestBar(props: Props) {
     const cur = activePicker();
     if (cur?.section === "auth" && cur.field === field) { setActivePicker(null); return; }
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setPickerPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+    const z = currentZoom();
+    setPickerPos({ top: rect.bottom / z + 4, right: window.innerWidth / z - rect.right / z });
     refetchSecrets();
     refetchVars();
     setActivePicker({ section: "auth", field });
@@ -1149,7 +1155,8 @@ export default function RequestBar(props: Props) {
                               const cur = activePicker();
                               if (cur?.section === "params" && cur.row === i) { setActivePicker(null); return; }
                               const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                              setPickerPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+                              const z = currentZoom();
+                              setPickerPos({ top: rect.bottom / z + 4, right: window.innerWidth / z - rect.right / z });
                               refetchSecrets();
                               refetchVars();
                               setActivePicker({ section: "params", row: i });
@@ -1259,7 +1266,8 @@ export default function RequestBar(props: Props) {
                                 const cur = activePicker();
                                 if (cur?.section === "headers" && cur.row === i) { setActivePicker(null); return; }
                                 const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-                                setPickerPos({ top: rect.bottom + 4, right: window.innerWidth - rect.right });
+                                const z = currentZoom();
+                                setPickerPos({ top: rect.bottom / z + 4, right: window.innerWidth / z - rect.right / z });
                                 refetchSecrets();
                                 refetchVars();
                                 setActivePicker({ section: "headers", row: i });

@@ -47,7 +47,7 @@ type Props = {
 };
 
 function currentZoom() {
-  const z = parseFloat(document.body.style.zoom);
+  const z = parseFloat(document.documentElement.style.zoom);
   return Number.isFinite(z) && z > 0 ? z : 1;
 }
 
