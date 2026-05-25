@@ -528,17 +528,27 @@ export default function RequestBar(props: Props) {
     let sendMethod = method().name;
 
     if (protocol() === "graphql") {
-      sendMethod = "POST";
       const q = gqlQuery();
       const vRaw = gqlVariables().trim();
-      let vars: unknown = {};
-      if (vRaw) {
-        try { vars = JSON.parse(vRaw); }
-        catch { vars = {}; }
-      }
-      body = JSON.stringify({ query: q, variables: vars });
-      if (!rawHeaders.some(([k]) => k.toLowerCase() === "content-type")) {
-        rawHeaders = [["Content-Type", "application/json"], ...rawHeaders];
+      if (sendMethod === "GET") {
+        const gqlParams: [string, string][] = [["query", q]];
+        if (vRaw) {
+          let parsedVars: unknown = {};
+          try { parsedVars = JSON.parse(vRaw); } catch { /* send empty object */ }
+          gqlParams.push(["variables", JSON.stringify(parsedVars)]);
+        }
+        rawParams = [...gqlParams, ...rawParams];
+      } else {
+        sendMethod = "POST";
+        let gqlVars: unknown = {};
+        if (vRaw) {
+          try { gqlVars = JSON.parse(vRaw); }
+          catch { gqlVars = {}; }
+        }
+        body = JSON.stringify({ query: q, variables: gqlVars });
+        if (!rawHeaders.some(([k]) => k.toLowerCase() === "content-type")) {
+          rawHeaders = [["Content-Type", "application/json"], ...rawHeaders];
+        }
       }
     } else {
       const mode = bodyMode();
@@ -746,6 +756,9 @@ export default function RequestBar(props: Props) {
                       onClick={() => {
                         if (!p.implemented) return;
                         setProtocol(p.id as Protocol);
+                        if (p.id === "graphql" && !["GET", "POST"].includes(method().name)) {
+                          setMethod(METHODS.find(m => m.name === "POST")!);
+                        }
                         setProtocolOpen(false);
                       }}
                       class="w-full flex items-center justify-between px-3 py-1.5
@@ -769,61 +782,59 @@ export default function RequestBar(props: Props) {
 
           <div class="w-px self-stretch my-2 bg-edge" />
 
-          <Show when={protocol() !== "graphql"}>
-            <div ref={menuWrap} class="relative flex items-stretch">
-              <button
-                type="button"
-                onClick={() => setOpen(!open())}
-                class="flex items-center gap-2 px-3
-                       text-[11px] font-semibold tracking-[0.12em]
-                       hover:bg-white/2.5 transition-colors cursor-pointer"
+          <div ref={menuWrap} class="relative flex items-stretch">
+            <button
+              type="button"
+              onClick={() => setOpen(!open())}
+              class="flex items-center gap-2 px-3
+                     text-[11px] font-semibold tracking-[0.12em]
+                     hover:bg-white/2.5 transition-colors cursor-pointer"
+            >
+              <span class={method().color}>{method().name}</span>
+              <svg
+                class="w-3 h-3 text-ink-faint transition-transform duration-200"
+                classList={{ "rotate-180": open() }}
+                viewBox="0 0 12 12"
+                fill="none"
               >
-                <span class={method().color}>{method().name}</span>
-                <svg
-                  class="w-3 h-3 text-ink-faint transition-transform duration-200"
-                  classList={{ "rotate-180": open() }}
-                  viewBox="0 0 12 12"
-                  fill="none"
-                >
-                  <path
-                    d="M3 4.5L6 7.5L9 4.5"
-                    stroke="currentColor"
-                    stroke-width="1.4"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </button>
+                <path
+                  d="M3 4.5L6 7.5L9 4.5"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
 
-              {open() && (
-                <div
-                  class="absolute top-[calc(100%+6px)] left-0 w-32 z-20
-                         rounded-xl border border-edge bg-surface-1
-                         shadow-[0_12px_32px_-8px_rgba(0,0,0,0.6)]
-                         py-1"
-                >
-                  <For each={METHODS}>
-                    {(m) => (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setMethod(m);
-                          setOpen(false);
-                        }}
-                        class="w-full flex items-center px-3 py-1.5
-                               text-[11px] font-semibold tracking-[0.12em]
-                               hover:bg-white/4 transition-colors cursor-pointer"
-                      >
-                        <span class={m.color}>{m.name}</span>
-                      </button>
-                    )}
-                  </For>
-                </div>
-              )}
-            </div>
+            {open() && (
+              <div
+                class="absolute top-[calc(100%+6px)] left-0 w-32 z-20
+                       rounded-xl border border-edge bg-surface-1
+                       shadow-[0_12px_32px_-8px_rgba(0,0,0,0.6)]
+                       py-1"
+              >
+                <For each={protocol() === "graphql" ? METHODS.filter(m => m.name === "GET" || m.name === "POST") : METHODS}>
+                  {(m) => (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMethod(m);
+                        setOpen(false);
+                      }}
+                      class="w-full flex items-center px-3 py-1.5
+                             text-[11px] font-semibold tracking-[0.12em]
+                             hover:bg-white/4 transition-colors cursor-pointer"
+                    >
+                      <span class={m.color}>{m.name}</span>
+                    </button>
+                  )}
+                </For>
+              </div>
+            )}
+          </div>
 
-            <div class="w-px self-stretch my-2 bg-edge" />
-          </Show>
+          <div class="w-px self-stretch my-2 bg-edge" />
 
           <div class="flex-1 flex items-center p-1">
             <div
@@ -1469,7 +1480,9 @@ export default function RequestBar(props: Props) {
                         <div class="space-y-2">
                           <div class="flex items-center justify-between">
                             <span class="text-[10px] font-mono text-verb-patch uppercase tracking-wider">Query</span>
-                            <span class="text-[10px] font-mono text-ink-faint">always POST · application/json</span>
+                            <span class="text-[10px] font-mono text-ink-faint">
+                              {method().name === "GET" ? "GET · query string · no body" : "POST · application/json"}
+                            </span>
                           </div>
                           <CodeEditor
                             value={gqlQuery()}
